@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Any
 
 
 class IntegerRange:
@@ -6,16 +7,16 @@ class IntegerRange:
         self.min_amount = min_amount
         self.max_amount = max_amount
 
-    def __set_name__(self, owner, name) -> None:
+    def __set_name__(self, owner: type, name: str) -> None:
         self.protected_name = f"_{name}"
 
-    def __get__(self, instance, owner):
+    def __get__(self, instance: object, owner: type) -> Any:
         if instance is None:
             return self
 
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(self, instance: object, value: int) -> None:
         if not isinstance(value, int):
             raise TypeError
 
@@ -59,7 +60,11 @@ class AdultSlideLimitationValidator(SlideLimitationValidator):
 
 
 class Slide:
-    def __init__(self, name: str, limitation_class) -> None:
+    def __init__(
+        self,
+        name: str,
+        limitation_class: type
+    ) -> None:
         self.name = name
         self.limitation_class = limitation_class
 
